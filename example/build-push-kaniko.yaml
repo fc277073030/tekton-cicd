@@ -1,24 +1,24 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: go-demo-build-push-kaniko
+  name: go-demo-image
 spec:
   type: image
   params:
     - name: url
-      value: localhost:5000/leeroy-web
+      value: registry.cn-hangzhou.aliyuncs.com/tekton-pipelines/go-demo
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: skaffold-git-build-push-kaniko
+  name: go-demo-git
 spec:
   type: git
   params:
     - name: revision
-      value: v0.32.0
+      value: master
     - name: url
-      value: https://github.com/GoogleContainerTools/skaffold
+      value: https://github.com/fc277073030/tekton-cicd.git
 ---
 # Builds an image via kaniko and pushes it to registry.
 apiVersion: tekton.dev/v1alpha1
@@ -28,15 +28,15 @@ metadata:
 spec:
   inputs:
     resources:
-      - name: workspace
+      - name: git-resp
         type: git
     params:
       - name: pathToDockerFile
         description: The path to the dockerfile to build
-        default: /workspace/workspace/Dockerfile
+        default: /workspace/git-resp/app/Dockerfile
       - name: pathToContext
         description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-        default: /workspace/workspace
+        default: /workspace/git-resp/app
   outputs:
     resources:
       - name: builtImage
@@ -54,32 +54,43 @@ spec:
         - --dockerfile=$(inputs.params.pathToDockerFile)
         - --destination=$(outputs.resources.builtImage.url)
         - --context=$(inputs.params.pathToContext)
-        - --oci-layout-path=$(inputs.resources.builtImage.path)
-      securityContext:
-        runAsUser: 0
-  sidecars:
-    - image: registry
-      name: registry
+        - --cache=true
+        - --cache-dir=/cache
+      volumeMounts:
+        - name: kaniko-cache
+          mountPath: /cache
+  volumes:
+    - name: kaniko-cache
+      persistentVolumeClaim:
+        claimName: kaniko-cache-claim
+
+#        - --oci-layout-path=$(inputs.resources.builtImage.path)
+#      securityContext:
+#        runAsUser: 0
+#  sidecars:
+#    - image: registry
+#      name: registry
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
   name: build-push-kaniko
 spec:
+  serviceAccountName: tekton-cicd
   taskRef:
     name: build-push-kaniko
   inputs:
     resources:
-      - name: workspace
+      - name: git-resp
         resourceRef:
-          name: skaffold-git-build-push-kaniko
+          name: go-demo-git
     params:
       - name: pathToDockerFile
-        value: Dockerfile
+        value: /workspace/git-resp/app/Dockerfile
       - name: pathToContext
-        value: /workspace/workspace/examples/microservices/leeroy-web
+        value: /workspace/git-resp/app
   outputs:
     resources:
       - name: builtImage
         resourceRef:
-          name: skaffold-image-leeroy-web-build-push-kaniko
+          name: go-demo-image
