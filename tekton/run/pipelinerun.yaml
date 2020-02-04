@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: go-demo-pipeline-run-1
+spec:
+  serviceAccountName: tekton-cicd
+  pipelineRef:
+    name: go-demo-pipeline
+  resources:
+    - name: git-repo
+      resourceRef:
+        name: go-demo-git
+    - name: image-registry
+      resourceRef:
+        name: go-demo-image
