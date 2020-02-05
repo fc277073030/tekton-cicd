@@ -17,43 +17,43 @@ spec:
       command: ["bash", "-c"]
       args:
         - echo -e 'Hello Triggers!\nContent-Type is $(inputs.params.contenttype)'
-#---
-#apiVersion: tekton.dev/v1alpha1
-#kind: Task
-#metadata:
-#  name: say-message
-#spec:
-#  inputs:
-#    params:
-#      - name: message
-#        description: The message to print
-#        default: This is the default message
-#        type: string
-#    resources:
-#      - name: git-source
-#        type: git
-#  steps:
-#    - name: say-message
-#      image: bash
-#      command: ["bash", "-c"]
-#      args:
-#        - echo '$(inputs.params.message)'
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
-  name: say-bye
+  name: say-message
 spec:
   inputs:
+    params:
+      - name: gitrevision
+        description: The message to print
+#        default: This is the default message
+        type: git
     resources:
       - name: git-source
         type: git
   steps:
-    - name: say-bye
+    - name: say-message
       image: bash
       command: ["bash", "-c"]
       args:
-        - echo 'Goodbye Triggers!'
+        - echo '$(inputs.params.message)'
+#---
+#apiVersion: tekton.dev/v1alpha1
+#kind: Task
+#metadata:
+#  name: say-bye
+#spec:
+#  inputs:
+#    resources:
+#      - name: git-source
+#        type: git
+#  steps:
+#    - name: say-bye
+#      image: bash
+#      command: ["bash", "-c"]
+#      args:
+#        - echo 'Goodbye Triggers!'
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
