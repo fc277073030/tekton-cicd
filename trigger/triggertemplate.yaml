@@ -9,52 +9,24 @@ spec:
       default: master
     - name: gitrepositoryurl
       description: The git repository url
-    - name: message
-      description: The message to print
-      default: This is the default message
-    - name: contenttype
-      description: The Content-Type of the event
+#    - name: message
+#      description: The message to print
+#      default: This is the default message
+#    - name: contenttype
+#      description: The Content-Type of the event
   resourcetemplates:
-    - apiVersion: tekton.dev/v1alpha1
-      kind: PipelineResource
-      metadata:
-        name: git-source-$(uid)
-      spec:
-        type: git
-        params:
-          - name: revision
-            value: $(params.gitrevision)
-          - name: url
-            value: $(params.gitrepositoryurl)
-
-    - apiVersion: tekton.dev/v1alpha1
-        kind: PipelineResource
-        metadata:
-          name: image-source-$(uid)
-        spec:
-          type: image
-          params:
-            - name: revision
-              value: $(params.gitrevision)
-            - name: url
-              value: $(params.gitrepositoryurl)
-
     - apiVersion: tekton.dev/v1alpha1
       kind: PipelineRun
       metadata:
-        generateName: simple-pipeline-run
+        generateName: go-demo-pipeline-run-
       spec:
+        serviceAccountName: tekton-cicd
         pipelineRef:
-          name: simple-pipeline
-        params:
-          - name: message
-            value: $(params.message)
-          - name: contenttype
-            value: $(params.contenttype)
+          name: go-demo-pipeline
         resources:
-          - name: git-source
+          - name: git-repo
             resourceRef:
-              name: git-source-$(uid)
-          - name: image-source
+              name: go-demo-git
+          - name: image-registry
             resourceRef:
-              name: image-source-$(uid)
+              name: go-demo-image
