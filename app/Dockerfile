@@ -1,9 +1,7 @@
-FROM golang:alpine3.10
+FROM golang:latest
 
-WORKDIR /go/src/app
-COPY . .
-
-
-RUN go install -v ./...
-
-CMD ["app"]
+RUN mkdir /app
+ADD . /app/
+WORKDIR /app
+RUN go build -o main .
+CMD ["/app/main"]
