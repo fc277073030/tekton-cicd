@@ -1,6 +1,7 @@
-FROM golang:alpine3.10
+FROM golang:latest
 
-WORKDIR /opt
+WORKDIR /go/src/app
 COPY . .
-RUN go build -o main
+#RUN go get -d -v ./...
+#RUN go build -o main
 CMD ["main"]
