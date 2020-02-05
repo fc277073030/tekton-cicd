@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: el-listener-ingress
+spec:
+  rules:
+    - host: el-listener.oifipaas.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: el-listener
+              servicePort: 8080
