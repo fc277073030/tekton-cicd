@@ -1,7 +1,5 @@
 FROM golang:alpine3.10
 
-RUN mkdir /app
-ADD . /app/
-WORKDIR /app
+WORKDIR /opt
 RUN go build -o main .
-CMD ["/app/main"]
+CMD ["/opt/main"]
