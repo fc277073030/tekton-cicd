@@ -5,9 +5,9 @@ metadata:
 spec:
   inputs:
     resources:
-      - name: source
+      - name: git-source
         type: git
-      - name: image
+      - name: image-source
         type: image
     params:
       - name: path
@@ -25,7 +25,7 @@ spec:
         - "-i"
         - "$(inputs.params.path)"
         - "$(inputs.params.yamlPathToImage)"
-        - "$(inputs.resources.image.url)"
+        - "$(inputs.resources.image-source.url)"
     - name: run-kubectl
       image: lachlanevenson/k8s-kubectl:v1.14.10
       command: ["kubectl"]
