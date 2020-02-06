@@ -8,8 +8,13 @@ spec:
     name: go-demo-pipeline
   resources:
     - name: git-source
-      resourceRef:
-        name: go-demo-git
+      resourceSpec:
+        type: git
+        params:
+          - name: revision
+            value: master
+          - name: url
+            value: https://github.com/fc277073030/tekton-cicd.git
     - name: image-source
       resourceRef:
         name: go-demo-image

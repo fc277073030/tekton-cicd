@@ -14,6 +14,9 @@ spec:
       - name: pathToContext
         description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
         default: /workspace/git-repo/app
+      - name: gitrevision
+        description: Tag image with git commit id
+        default: master
   outputs:
     resources:
       - name: builtImage

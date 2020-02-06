@@ -13,15 +13,11 @@ spec:
     - apiVersion: tekton.dev/v1alpha1
       kind: PipelineRun
       metadata:
-        generateName: simple-pipeline-run-
+        generateName: go-demo-pipeline-run-
       spec:
+        serviceAccountName: tekton-cicd
         pipelineRef:
-          name: simple-pipeline
-        params:
-          - name: message
-            value: $(params.message)
-          - name: gitrevision
-            value: $(params.gitrevision)
+          name: go-demo-pipeline
         resources:
           - name: git-source
             resourceSpec:
@@ -31,3 +27,9 @@ spec:
                   value: $(params.gitrevision)
                 - name: url
                   value: $(params.gitrepositoryurl)
+          - name: image-source
+            resourceSpec:
+              type: image
+              params:
+                - name: url
+                  value: registry.cn-hangzhou.aliyuncs.com/tekton-pipelines/go-demo:$(params.gitrevision)
