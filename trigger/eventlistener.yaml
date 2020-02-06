@@ -13,3 +13,5 @@ spec:
       params:
         - name: message
           value: Hello from the Triggers EventListener!
+        - name: gitrevision
+          value: $(body.head_commit.id)

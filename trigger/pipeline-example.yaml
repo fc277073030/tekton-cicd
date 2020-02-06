@@ -5,8 +5,8 @@ metadata:
 spec:
   inputs:
     params:
-      - name: contenttype
-        description: The Content-Type of the event
+      - name: gitrevision
+        description: git commit id
         type: string
     resources:
       - name: git-source
@@ -16,44 +16,7 @@ spec:
       image: bash
       command: ["bash", "-c"]
       args:
-        - echo -e 'Hello Triggers!\nContent-Type is $(inputs.params.contenttype)'
----
-apiVersion: tekton.dev/v1alpha1
-kind: Task
-metadata:
-  name: say-message
-spec:
-  inputs:
-    params:
-      - name: gitrevision
-        description: The message to print
-#        default: This is the default message
-        type: git
-    resources:
-      - name: git-source
-        type: git
-  steps:
-    - name: say-message
-      image: bash
-      command: ["bash", "-c"]
-      args:
-        - echo '$(inputs.params.message)'
-#---
-#apiVersion: tekton.dev/v1alpha1
-#kind: Task
-#metadata:
-#  name: say-bye
-#spec:
-#  inputs:
-#    resources:
-#      - name: git-source
-#        type: git
-#  steps:
-#    - name: say-bye
-#      image: bash
-#      command: ["bash", "-c"]
-#      args:
-#        - echo 'Goodbye Triggers!'
+        - echo -e 'Hello is $(inputs.params.gitrevision)'
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
@@ -61,12 +24,8 @@ metadata:
   name: simple-pipeline
 spec:
   params:
-    - name: message
-      description: The message to print
-      default: This is the default message
-      type: string
-    - name: contenttype
-      description: The Content-Type of the event
+    - name: gitrevision
+      description: git commit id
       type: string
   resources:
     - name: git-source
@@ -76,28 +35,10 @@ spec:
       taskRef:
         name: say-hello
       params:
-        - name: contenttype
-          value: $(params.contenttype)
+        - name: gitrevision
+          value: $(params.gitrevision)
       resources:
         inputs:
           - name: git-source
             resource: git-source
-#    - name: say-message
-#      runAfter: [say-hello]
-#      taskRef:
-#        name: say-message
-#      params:
-#        - name: message
-#          value: $(params.message)
-#      resources:
-#        inputs:
-#          - name: git-source
-#            resource: git-source
-#    - name: say-bye
-#      runAfter: [say-message]
-#      taskRef:
-#        name: say-bye
-#      resources:
-#        inputs:
-#          - name: git-source
-#            resource: git-source
+

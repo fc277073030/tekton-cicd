@@ -5,7 +5,7 @@ curl -X POST \
   -d '{
 	"head_commit":
 	{
-		"id": "master"
+		"id": "80c7e5e5f83aef2cf7c26dd884f78b8bf6fe9593"
 	},
 	"repository":
 	{
