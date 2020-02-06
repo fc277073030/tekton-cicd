@@ -4,9 +4,9 @@ metadata:
   name: go-demo-pipeline
 spec:
   resources:
-    - name: git-repo
+    - name: git-source
       type: git
-    - name: image-registry
+    - name: image-source
       type: image
   tasks:
     - name: build-push-kaniko
@@ -14,13 +14,13 @@ spec:
         name: build-push-kaniko
       params:
         - name: pathToDockerFile
-          value: /workspace/git-repo/app/Dockerfile
+          value: /workspace/git-source/app/Dockerfile
         - name: pathToContext
-          value: /workspace/git-repo/app #configure: may change according to your source
+          value: /workspace/git-source/app #configure: may change according to your source
       resources:
         inputs:
-          - name: git-repo
-            resource: git-repo
+          - name: git-source
+            resource: git-source
         outputs:
           - name: builtImage
-            resource: image-registry
+            resource: image-source

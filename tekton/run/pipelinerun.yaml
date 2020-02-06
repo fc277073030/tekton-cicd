@@ -7,9 +7,9 @@ spec:
   pipelineRef:
     name: go-demo-pipeline
   resources:
-    - name: git-repo
+    - name: git-source
       resourceRef:
         name: go-demo-git
-    - name: image-registry
+    - name: image-source
       resourceRef:
         name: go-demo-image
