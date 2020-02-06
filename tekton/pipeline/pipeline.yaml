@@ -37,6 +37,6 @@ spec:
               - build-push-kaniko
       params:
         - name: path
-          value: /workspace/source/go-demo/deployment.yaml #configure: may change according to your source
+          value: /workspace/git-source/go-demo/deployment.yaml #configure: may change according to your source
         - name: yamlPathToImage
           value: "spec.template.spec.containers[0].image"
