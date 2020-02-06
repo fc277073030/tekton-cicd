@@ -14,9 +14,9 @@ spec:
         name: build-push-kaniko
       params:
         - name: pathToDockerFile
-          value: /workspace/git-source/app/Dockerfile
+          value: /workspace/git-source/go-demo/Dockerfile
         - name: pathToContext
-          value: /workspace/git-source/app
+          value: /workspace/git-source/go-demo
       resources:
         inputs:
           - name: git-source
@@ -24,3 +24,19 @@ spec:
         outputs:
           - name: builtImage
             resource: image-source
+    - name: deploy-using-kubectl
+      taskRef:
+        name: deploy-using-kubectl
+      resources:
+        inputs:
+          - name: git-source
+            resource: git-source
+          - name: image-source
+            resource: image-source
+            from:
+              - build-push-kaniko
+      params:
+        - name: path
+          value: /workspace/source/go-demo/deployment.yaml #configure: may change according to your source
+        - name: yamlPathToImage
+          value: "spec.template.spec.containers[0].image"
