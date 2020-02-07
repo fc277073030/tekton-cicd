@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: go-demo-pipeline
+spec:
+  resources:
+    - name: git-source
+      type: git
+    - name: image-source
+      type: image
+  tasks:
+    - name: build-push-kaniko
+      taskRef:
+        name: build-push-kaniko
+      params:
+        - name: pathToDockerFile
+          value: /workspace/git-source/Dockerfile
+        - name: pathToContext
+          value: /workspace/git-source
+      resources:
+        inputs:
+          - name: git-source
+            resource: git-source
+        outputs:
+          - name: builtImage
+            resource: image-source
+    - name: deploy-using-kubectl
+      taskRef:
+        name: deploy-using-kubectl
+      resources:
+        inputs:
+          - name: git-source
+            resource: git-source
+          - name: image-source
+            resource: image-source
+            from:
+              - build-push-kaniko
+      params:
+        - name: path
+          value: /workspace/git-source/deployment.yaml #configure: may change according to your source
+        - name: yamlPathToImage
+          value: "spec.template.spec.containers[0].image"

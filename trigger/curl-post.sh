@@ -1,5 +1,5 @@
 curl -X POST \
-  http://el-listener.oifipaas.com \
+  http://el-go-demo-listener.oifipaas.com \
   -H 'Content-Type: application/json' \
   -H 'X-Hub-Signature: sha1=2da37dcb9404ff17b714ee7a505c384758ddeb7b' \
   -d '{
@@ -9,6 +9,6 @@ curl -X POST \
 	},
 	"repository":
 	{
-		"url": "https://github.com/fc277073030/tekton-cicd.git"
+		"url": "https://github.com/fc277073030/go-demo"
 	}
 }'

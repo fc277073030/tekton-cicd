@@ -14,7 +14,10 @@ spec:
           - name: revision
             value: master
           - name: url
-            value: https://github.com/fc277073030/tekton-cicd.git
+            value: https://github.com/fc277073030/go-demo.git
     - name: image-source
-      resourceRef:
-        name: go-demo-image
+      resourceSpec:
+        type: image
+        params:
+          - name: url
+            value: registry.cn-hangzhou.aliyuncs.com/tekton-pipelines/go-demo:latest

@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: el-go-demo-listener
+spec:
+  rules:
+    - host: el-go-demo-listener.oifipaas.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: el-go-demo-listener
+              servicePort: 8080

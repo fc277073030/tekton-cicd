@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: spring-demo-listener
+spec:
+  serviceAccountName: tekton-cicd
+  triggers:
+    - name: spring-demo-trigger
+      binding:
+        name: spring-demo-pipeline-binding
+      template:
+        name: spring-demo-pipeline-template

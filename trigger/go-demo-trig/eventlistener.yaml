@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: listener
+  name: go-demo-listener
 spec:
   serviceAccountName: tekton-cicd
   triggers:
-    - name: foo-trig
+    - name: go-demo-trigger
       binding:
-        name: pipeline-binding
+        name: go-demo-pipeline-binding
       template:
-        name: pipeline-template
+        name: go-demo-pipeline-template

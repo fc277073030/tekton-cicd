@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
-  name: go-demo-pipeline
+  name: spring-demo-pipeline
 spec:
   resources:
     - name: git-source
@@ -9,14 +9,15 @@ spec:
     - name: image-source
       type: image
   tasks:
+    - name:
     - name: build-push-kaniko
       taskRef:
         name: build-push-kaniko
       params:
         - name: pathToDockerFile
-          value: /workspace/git-source/go-demo/Dockerfile
+          value: /workspace/git-source/Dockerfile
         - name: pathToContext
-          value: /workspace/git-source/go-demo
+          value: /workspace/git-source
       resources:
         inputs:
           - name: git-source
@@ -37,6 +38,6 @@ spec:
               - build-push-kaniko
       params:
         - name: path
-          value: /workspace/git-source/go-demo/deployment.yaml #configure: may change according to your source
+          value: /workspace/git-source/deployment.yaml #configure: may change according to your source
         - name: yamlPathToImage
           value: "spec.template.spec.containers[0].image"

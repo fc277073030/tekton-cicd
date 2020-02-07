@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: pipeline-template
+  name: go-demo-pipeline-template
 spec:
   params:
     - name: gitrevision
