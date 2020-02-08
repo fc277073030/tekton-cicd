@@ -13,7 +13,7 @@ spec:
     - apiVersion: tekton.dev/v1alpha1
       kind: PipelineRun
       metadata:
-        generateName: go-demo-pipeline-run-
+        generateName: go-demo-pipeline-run-1
       spec:
         serviceAccountName: tekton-cicd
         pipelineRef:
